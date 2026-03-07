@@ -20,7 +20,7 @@ func ReadFile(s string) []string {
 }
 
 func AsciiPrinter(arr []string, input []string) {
-	// loop that handles printing of each row on a new line
+
 	for _, str := range arr {
 		if str == "" {
 			fmt.Println()
@@ -32,10 +32,6 @@ func AsciiPrinter(arr []string, input []string) {
 				if ch >= 32 && ch <= 126 {
 					start := int((ch-32)*9) + i
 					fmt.Print(input[start])
-					// for j := start; j < start+1; j++ {
-					// 	fmt.Print(fileStr[j])
-
-					// }
 				}
 
 			}
