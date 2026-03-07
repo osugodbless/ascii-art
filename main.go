@@ -1,57 +1,44 @@
 package main
 
 import (
+	"ascii-art/ascii"
 	"fmt"
 	"os"
 	"strings"
 )
 
 func main() {
+	// Get all command-line arguments except the program name.
+	// os.Args[0] is the program name, so it start from index 1.
 	argSlice := os.Args[1:]
 
+	// Validate if only one argument was passed, if not print an error message.
 	if len(argSlice) < 1 || len(argSlice) > 1 {
 		fmt.Println("This program requires only one argument! Your command contains less or more than one argument.")
 		return
 	}
-	arg := argSlice[0]
 
-	arg = strings.ReplaceAll(arg, "\\n", "\n")
+	// Extract from argument slice (argSlice), the argument passed to the program.
+	inputStr := argSlice[0]
 
-	arrArg := strings.Split(arg, "\n")
-
-	fmt.Println(arrArg)
-
-	file, err := os.ReadFile("standard.txt")
-
-	if err != nil {
-		fmt.Println("Unable to read file. Please check that your file path is correct and your directory contains the the file")
+	// If input string is empty, terminate the program
+	if inputStr == "" {
 		return
 	}
 
-	fileStr := strings.Split(string(file), "\n")
-
-	// loop that handles printing of each row on a new line
-	for _, str := range arrArg {
-		if str == "" {
-			fmt.Println()
-		}
-
-		for i := 1; i <= 8; i++ {
-			for _, ch := range str {
-				if ch >= 32 && ch <= 126 {
-					start := int((ch-32)*9) + i
-					fmt.Print(fileStr[start])
-					// for j := start; j < start+1; j++ {
-					// 	fmt.Print(fileStr[j])
-
-					// }
-				}
-
-			}
-			fmt.Println()
-
-		}
-
+	// Handle edge case where user passes "\n" as argument
+	if inputStr == "\\n" {
+		fmt.Println()
+		return
 	}
 
+	// Split input string into multiple individual string using "\n" as the separator.
+	// This enables the program to print a new line, if it is part of the argument.
+	arrayOfStrings := strings.Split(inputStr, "\\n")
+
+	// Read the ASCII art file. It contains the ascii representations for characters.
+	asciiFile := ascii.ReadFile("standard.txt")
+
+	// Print ascii representation of each string input
+	ascii.AsciiPrinter(arrayOfStrings, asciiFile)
 }
