@@ -1,43 +1,68 @@
 package ascii
 
 import (
-	"fmt"
 	"os"
 	"strings"
 )
 
-func ReadFile(s string) []string {
+// ReadFile reads a file from the given path and returns its contents
+// as a slice of strings, where each element represents a line in the file.
+func ReadFile(s string) ([]string, error) {
+	// Read the entire file into memory
 	file, err := os.ReadFile(s)
 
+	// If an error occurs while reading the file, return the error
 	if err != nil {
-		fmt.Println("Unable to read file. Please check that your file path is correct and your directory contains the the file")
-		return []string{}
+		return nil, err
 	}
 
+	// Split the file content by newline characters into a slice of strings
 	asciiFile := strings.Split(string(file), "\n")
 
-	return asciiFile
+	// Return the slice of lines
+	return asciiFile, nil
 }
 
-func AsciiPrinter(arr []string, input []string) {
+// AsciiPrinter converts input text into ASCII art using a banner file.
+// arr: slice of input strings to print
+// fileInput: slice containing ASCII art representations of characters
+func AsciiPrinter(arr []string, fileInput []string) string {
+	result := ""
 
+	// Loop through each string in the input array
 	for _, str := range arr {
+
+		// If the string is empty, add a newline to preserve spacing
 		if str == "" {
-			fmt.Println()
+			result += "\n"
 			continue
 		}
 
+		// Each ASCII character is represented by 8 lines
 		for i := 1; i <= 8; i++ {
+
+			// Loop through each character in the string
 			for _, ch := range str {
+
+				// Ensure the character is a printable ASCII character
 				if ch >= 32 && ch <= 126 {
+
+					// Calculate the starting index of the ASCII art
+					// Each character occupies 9 lines in the banner file
 					start := int((ch-32)*9) + i
-					fmt.Print(input[start])
+
+					// Append the corresponding ASCII art line
+					result += fileInput[start]
 				}
 
 			}
-			fmt.Println()
 
+			// Add a newline after each ASCII art row
+			result += "\n"
 		}
 
 	}
+
+	// Return the final ASCII art result
+	return result
 }

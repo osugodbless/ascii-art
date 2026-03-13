@@ -37,8 +37,13 @@ func main() {
 	arrayOfStrings := strings.Split(inputStr, "\\n")
 
 	// Read the ASCII art file. It contains the ascii representations for characters.
-	asciiFile := ascii.ReadFile("standard.txt")
+	asciiFile, err := ascii.ReadFile("standard.txt")
+	if err != nil {
+		fmt.Printf("read file: %v\n", err)
+		return
+	}
 
 	// Print ascii representation of each string input
-	ascii.AsciiPrinter(arrayOfStrings, asciiFile)
+	result := ascii.AsciiPrinter(arrayOfStrings, asciiFile)
+	fmt.Print(result)
 }
